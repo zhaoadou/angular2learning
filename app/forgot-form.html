@@ -1,0 +1,40 @@
+<div class="container">
+    <h1>システムパスワードリセット</h1>
+    <div [hidden]="errors.length===0" class="list-group">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-danger" *ngFor="let error of errors">
+                {{error}}
+            </li>
+        </ul>
+    </div>
+    <div [hidden]="messages.length===0" class="list-group">
+        <li class="list-group-item list-group-item-success" *ngFor="let msg of messages">
+            {{msg}}
+        </li>
+    </div>
+    <form *ngIf="!success" (ngSubmit)="onSubmit()" #forgotForm="ngForm">
+        <div class="form-group">
+            <label for="sysmtemName">社内システム名前</label>
+            <select [(ngModel)]="model.systemIdx" class="form-control" ngControl="name" #name="ngForm" required>
+                <option *ngFor="let sysmtemName of expectedSysmtemNames" [value]="sysmtemName.value">{{sysmtemName.name}}</option>
+            </select>
+            <div [hidden]="name.valid || name.pristine" class="alert alert-danger">システム名前を選択してください。</div>
+        </div>
+        <div class="form-group">
+            <label for="mailAdress">メールアドレス</label>
+            <input type="text" class="form-control" [(ngModel)]="model.mailAddress" ngControl="address" #address="ngForm" required>
+            <div [hidden]="address.valid || address.pristine" class="alert alert-danger">メールアドレスを入力してください。</div>
+        </div>
+
+        <button type="submit" class="btn btn-default" [disabled]="!forgotForm.form.valid">登録</button>
+        <button type="reset" class="btn btn-default">リセット</button>
+    </form>
+    <div *ngIf="success">
+        <div class="form-group">
+            <label for="sysmtemName">社内システム名前</label> {{getCurrentModelSystemName()}}
+        </div>
+        <div class="form-group">
+            <label for="mailAdress">メールアドレス</label> {{model.mailAddress}}
+        </div>
+    </div>
+</div>
