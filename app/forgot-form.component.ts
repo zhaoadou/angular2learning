@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 
-import { NgForm } from '@angular/common';
+import { FormBuilder,NgForm,Control, Validators} from '@angular/common';
+
+import { MailAddressValidator } from './mailAddressValidator';
 
 import { ForgotModel } from './forgot';
 
@@ -17,7 +19,14 @@ import {UserError} from './user.error.ts';
 })
 
 export class ForgotFormComponent {
-    constructor(private passwordService: PasswordResetService) {
+    
+    forgotForm :any;
+    
+    constructor(private _formBuilder : FormBuilder,private _mailAddressValidator:MailAddressValidator,private passwordService : PasswordResetService) {
+        this.forgotForm =this._formBuilder.group({
+            'name':['',Validators.required],
+            'address':['',Validators.compose([Validators.required,_mailAddressValidator.validate])]
+        });
     }
 
     private expectedSysmtemNames = [
@@ -43,7 +52,7 @@ export class ForgotFormComponent {
 
     public errors: string[] = [];
 
-    model: ForgotModel = new ForgotModel("1");
+    @Input() model: ForgotModel = new ForgotModel("1");
     
     getCurrentModelSystemName() :any {
         return this.expectedSysmtemNames.find(item=>item.value===this.model.systemIdx).name;

@@ -4,4 +4,7 @@ import { AppComponent } from './app.component';
 
 import { PasswordResetService } from './password.service';
 
-bootstrap(AppComponent,[PasswordResetService]);
+
+import { MailAddressValidator } from './mailAddressValidator';
+
+bootstrap(AppComponent,[PasswordResetService,MailAddressValidator]);
